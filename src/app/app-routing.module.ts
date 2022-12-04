@@ -4,12 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'child',
-    loadChildren: './child/child-routing.module#ChildComponent',
-    //loadChildren: './views/book/book-routing.module#BookRoutingModule',
-  },
-  {
-    path: '**',
-    redirectTo: 'landing',
+    loadChildren: () =>
+      import('./child/child.module').then((m) => m.ChildRoutingModule),
   },
 ];
 
