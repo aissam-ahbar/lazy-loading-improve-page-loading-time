@@ -7,7 +7,7 @@ Users can switch between these views.
 ```
 -----------------------
 # app.component.html
-----------------------
+-----------------------
 <a routerLink="/child" routerLinkActive="active">Child component lazy loaded</a>
 <router-outlet></router-outlet>
 ```
