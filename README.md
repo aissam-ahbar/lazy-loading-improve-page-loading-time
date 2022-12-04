@@ -5,51 +5,81 @@ It allows navigation between views.
 Users can switch between these views.
 
 ```
-----------------
-# app.module.ts
-----------------
-// Load 2 components: ComponentOne & ComponentTwo
-@NgModule({
-  declarations: [
-    AppComponent,
-    OneComponent,
-    TwoComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+-----------------------
+# app.component.html
+----------------------
+<a routerLink="/child" routerLinkActive="active">Child component lazy loaded</a>
+<router-outlet></router-outlet>
 ```
 
 ```
--------------------------
-# app.routing.module.ts
--------------------------
+---------------------------------------
+# app.module.ts => AppRountingModule
+---------------------------------------
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+```
+--------------------------------------------
+# app.routing.module.ts => child.module.ts
+--------------------------------------------
 const routes: Routes = [
-{ path: 'one', component: OneComponent },
-{ path: 'two', component: TwoComponent },
+  {
+    path: 'child',
+    loadChildren: () =>
+      // lazy loaded module = childModule
+      import('./child/child.module').then((m) => m.ChildModule),
+  },
+  {
+    path: '',
+    redirectTo: '',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
-// Creates and configures a module with all the router providers and directives.
-imports: [RouterModule.forRoot(routes)],
-exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
-
 ```
 
 ```
---------------------
-# app.component.ts
---------------------
-<a routerLink="/one" routerLinkActive="active">Component One</a>
-<a routerLink="/two" routerLinkActive="active">Component Two</a>
+-----------------------------------------------------------------
+# child.module.ts => ChildRoutingComponent + ChildRoutingModule
+-----------------------------------------------------------------
+@NgModule({
+  declarations: [ChildComponent],
+  imports: [CommonModule, ChildRoutingModule],
+})
+export class ChildModule {}
+```
 
-<!-- RENDER THE ROUTE (ROUTER OUTLET) -->
-<router-outlet></router-outlet>
+```
+----------------------------------------------------
+# child-routing.module.ts => ChildRoutingComponent
+----------------------------------------------------
+// Lazy loaded ChildComponent route
+const routeChild: Routes = [
+  {
+    path: 'child',
+    component: ChildComponent,
+  },
+  {
+    path: '**',
+    redirectTo: 'child',
+  },
+];
+
+@NgModule({
+  // Child Module ===> ChildRoutingModule ===> ChildComponent route
+  imports: [RouterModule.forChild(routeChild)],
+  exports: [RouterModule],
+})
+export class ChildRoutingModule {}
 ```
