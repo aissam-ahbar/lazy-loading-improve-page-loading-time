@@ -9,6 +9,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./child/child.module').then((m) => m.ChildModule),
   },
+  {
+    path: '',
+    redirectTo: '',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
