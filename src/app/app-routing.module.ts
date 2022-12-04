@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+// ChildModule generated with :
+// $ ng generate module child --route child --module app.module
 const routes: Routes = [
   {
     path: 'child',
     loadChildren: () =>
-      import('./child/child.module').then((m) => m.ChildRoutingModule),
+      import('./child/child.module').then((m) => m.ChildModule),
   },
 ];
 

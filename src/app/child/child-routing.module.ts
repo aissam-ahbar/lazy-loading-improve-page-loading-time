@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChildComponent } from './child.component';
+import { ChildModule } from './child.module';
 
 // Create lazy loaded children component
 const routeChild: Routes = [
@@ -15,7 +16,7 @@ const routeChild: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routeChild)],
+  imports: [ChildModule, RouterModule.forChild(routeChild)],
   exports: [RouterModule],
 })
 export class ChildRoutingModule {}
